@@ -29,7 +29,7 @@ const showDialog = ref(false)
           </v-card-subtitle>
         </v-card-item>
         <v-card-actions class="position-absolute top-0 right-0">
-          <v-switch color="primary"></v-switch>
+          <v-switch @click.stop color="primary"></v-switch>
         </v-card-actions>
       </v-card>
     </div>
