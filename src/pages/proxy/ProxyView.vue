@@ -1,5 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
+
+import { invoke } from '@tauri-apps/api/core'
+
+const setGitProxy = () => {
+  invoke("set_http_proxy")
+}
 
 const cards = [
   { "title": "Title1", "subtitle": "subtitle1" },
@@ -29,7 +35,7 @@ const showDialog = ref(false)
           </v-card-subtitle>
         </v-card-item>
         <v-card-actions class="position-absolute top-0 right-0">
-          <v-switch @click.stop color="primary"></v-switch>
+          <v-switch @click.stop="setGitProxy" color="primary"></v-switch>
         </v-card-actions>
       </v-card>
     </div>
