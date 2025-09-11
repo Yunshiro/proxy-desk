@@ -1,6 +1,7 @@
 mod git_proxy;
 
 use git_proxy::basic_proxy::set_http_proxy;
+use git_proxy::read_config::query_proxy_configs;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -14,8 +15,9 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             greet,
-            set_http_proxy
-            ])
+            set_http_proxy,
+            query_proxy_configs,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

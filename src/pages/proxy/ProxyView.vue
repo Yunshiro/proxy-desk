@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import { invoke } from '@tauri-apps/api/core'
 
 const setGitProxy = () => {
-  invoke("set_http_proxy")
+  invoke("set_http_proxy", { proxyUrl: "",isHttps: false })
 }
 
 const cards = [
