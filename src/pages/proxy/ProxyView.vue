@@ -1,41 +1,45 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import { invoke } from '@tauri-apps/api/core'
+
+const proxyStatus = ref('no')
 
 const setGitProxy = () => {
   invoke("set_http_proxy", { proxyUrl: "",isHttps: false })
 }
 
-const cards = [
-  { "title": "Title1", "subtitle": "subtitle1" },
-  { "title": "Title2", "subtitle": "subtitle2" },
-  { "title": "Title3", "subtitle": "subtitle3" },
-  { "title": "Title4", "subtitle": "subtitle4" },
-  { "title": "Title5", "subtitle": "subtitle5" },
-  { "title": "Title6", "subtitle": "subtitle6" },
-  { "title": "Title7", "subtitle": "subtitle7" },
-  { "title": "Title8", "subtitle": "subtitle8" },
-]
-
 const showDialog = ref(false)
+
+const confs = ref([])
+const initConfigs = async () => {
+  const result = await invoke('query_proxy_configs')
+  confs.value = result
+}
+
+onMounted(() => {
+  initConfigs()
+})
 
 </script>
 
 <template>
   <div id="proxy-view" style="background-color: antiquewhite; height: 100vh;">
     <div id="card-container">
-      <v-card id="proxy-card" width="150px" v-for="cd in cards" hover @click="showDialog = true">
+      <v-card id="proxy-card" width="150px" v-for="conf in confs" hover @click="showDialog = true">
         <v-card-item>
           <v-card-title>
-            {{ cd.title }}
+            {{ conf.title }}
           </v-card-title>
           <v-card-subtitle>
-            {{ cd.subtitle }}
+            {{ conf.proxy_url }}
           </v-card-subtitle>
         </v-card-item>
         <v-card-actions class="position-absolute top-0 right-0">
-          <v-switch @click.stop="setGitProxy" color="primary"></v-switch>
+          <v-switch @click.stop="setGitProxy" color="primary" v-model="conf.status"
+            false-value="inactive" true-value="active"
+          ></v-switch>
+          {{ conf.status }}
         </v-card-actions>
       </v-card>
     </div>
